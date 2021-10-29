@@ -6,7 +6,7 @@
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="antialiased">
+<body class="antialiased login-body">
 <form class="form-signin" action="/login" method="post">
     <h1 class="h3 mb-3 font-weight-normal">{{__('labels.signIn')}}</h1>
     <label for="inputEmail" class="sr-only">{{__('labels.username')}}</label>

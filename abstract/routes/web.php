@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\LoginController;
 use App\Http\Middleware\LoginCredentials;
 use Illuminate\Support\Facades\Route;
@@ -18,3 +19,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LoginController::class, 'index']);
 
 Route::post('/login', [LoginController::class, 'login'])->middleware(LoginCredentials::class);
+
+Route::post('/upload', [FileController::class, 'uploadFile']);

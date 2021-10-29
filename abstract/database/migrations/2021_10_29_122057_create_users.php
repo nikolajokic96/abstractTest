@@ -18,7 +18,7 @@ class CreateUsers extends Migration
             $table->string('username')->index();
             $table->string('email')->index();
             $table->string('password')->index();
-            $table->text('fails')->nullable();
+            $table->text('files')->nullable();
             $table->text('zipFiles')->nullable();
         });
     }

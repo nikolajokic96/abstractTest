@@ -14,6 +14,7 @@ class LoginController extends BaseController
     public const WELCOME_VIEW = 'welcome';
     public const DASHBOARD = 'dashboard';
     public const ERROR_VIEW = 'error';
+    public const CURRENT_USER = 'username';
 
     /**
      * @var LoginService
@@ -45,7 +46,8 @@ class LoginController extends BaseController
     {
         try {
             $user = $this->loginService->login($request->get('username'), $request->get('password'));
-
+            session([self::CURRENT_USER => $user->username]);
+            //TODO get all users file and show them
             return \view(self::DASHBOARD);
         } catch (\Exception $e) {
             return view(self::ERROR_VIEW, ['message' => $e->getMessage()]);

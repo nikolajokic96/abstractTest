@@ -8,4 +8,11 @@ return [
     'password' => 'Password',
     'signButton' => 'Sign in',
     'noSuchUser' => 'No such user! Try again!',
+    'addFail' => 'Add file',
+    'failName' => 'File name',
+    'upload' => 'Upload',
+    'chooseFile' => 'Choose file',
+    'noFile' => 'Please enter file',
+    'validFile' => 'Some data corruption has acquired',
+
 ];
