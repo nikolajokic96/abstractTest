@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'endpoints' => [
+        '0' => 'https://en0b3xonvuaver.x.pipedream.net',
+    ],
+
+    'payloadType' => env('PAYLOAD_TYPE', 'json'),
+
 ];

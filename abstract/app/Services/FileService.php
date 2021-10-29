@@ -2,11 +2,15 @@
 
 namespace App\Services;
 
+use App\Jobs\Webhook;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Utilities\JsonPayloadStrategy;
 
 class FileService
 {
+    public const JSON_PAYLOAD = 'json';
+
     /**
      * @var UserRepository
      */
@@ -34,6 +38,25 @@ class FileService
         ];
 
         $this->userRepository->saveUsersFiles($fileArray);
+    }
+
+    /**
+     * Sends Webhooks to all endpoints
+     * @param string $filePath
+     */
+    public function sendWebhooks(string $filePath)
+    {
+        $payloadStrategy = config('services.payloadType');
+        if ($payloadStrategy !== self::JSON_PAYLOAD) {
+            return;
+        }
+
+        $strategy = new RequestPayloadService(new JsonPayloadStrategy());
+        $payload = $strategy->createPayload($filePath);
+
+        $webhooksJob = new Webhook($payload);
+        dispatch($webhooksJob);
+
     }
 
     /**

@@ -45,6 +45,7 @@ class FileController
         $this->fileService->saveFile($url, $fileName);
         $zipFileJob = new ZipFile($fileName, $url, $this->fileService->getCurrentUser());
         dispatch($zipFileJob);
+        $this->fileService->sendWebhooks($url);
     }
 
     /**
