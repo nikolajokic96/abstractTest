@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
+use App\Http\Middleware\LoginCredentials;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [UserController::class, 'welcome']);
+Route::get('/', [LoginController::class, 'index']);
 
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])->middleware(LoginCredentials::class);
