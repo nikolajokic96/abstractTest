@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ZipFile;
 use App\Services\FileService;
+use App\Services\LoginService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class FileController
@@ -14,18 +18,25 @@ class FileController
      * @var FileService
      */
     private FileService $fileService;
+    /**
+     * @var LoginService
+     */
+    private LoginService $loginService;
 
     /**
      * @param FileService $fileService
+     * @param LoginService $loginService
      */
-    public function __construct(FileService $fileService)
+    public function __construct(FileService $fileService, LoginService $loginService)
     {
         $this->fileService = $fileService;
+        $this->loginService = $loginService;
     }
 
     /**
      * Uploads file
      * @param Request $request
+     * @return Application|Factory|View
      */
     public function uploadFile(Request $request)
     {
@@ -41,11 +52,13 @@ class FileController
             ['disk' => 'public']
         );
 
+        $currentUser = $this->fileService->getCurrentUser();
         $url = public_path() . '/storage/' . $path;
         $this->fileService->saveFile($url, $fileName);
-        $zipFileJob = new ZipFile($fileName, $url, $this->fileService->getCurrentUser());
+        $zipFileJob = new ZipFile($fileName, $url, $currentUser);
         dispatch($zipFileJob);
         $this->fileService->sendWebhooks($url);
+        $this->fileService->reloadDashboardPage();
     }
 
     /**

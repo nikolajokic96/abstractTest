@@ -16,5 +16,37 @@
     <input type="file" id="file" name="file" class="form-control" required="">
     <button class="btn btn-lg btn-primary btn-block" type="submit">{{__('labels.upload')}}</button>
 </form>
+<br>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">{{__('crud.fileName')}}</th>
+        <th scope="col">{{__('crud.filePath')}}</th>
+        <th scope="col">{{__('crud.zipFilePath')}}</th>
+        <th scope="col">{{__('crud.action')}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($files as $file)
+        <tr>
+            <td>{{$file->getFile()['fileName']}}</td>
+            <td>{{$file->getFile()['path']}}</td>
+            <td>{{$file->getZipFile()['path']}}</td>
+            <td>
+                <div class="flex">
+                    <form action="/download" method="post">
+                        <input type="hidden" name="filePath" value="{{$file->getZipFile()['path']}}">
+                        <button type="submit" class="btn btn-outline-primary">{{__('crud.download')}}</button>
+                    </form>&nbsp;
+                    <form action="/delete" method="post">
+                        <input type="hidden" name="fileName" value="{{$file->getFile()['fileName']}}">
+                        <button type="submit" class="btn btn-outline-danger">{{__('crud.delete')}}</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    @endforeach
+    </tbody>
+</table>
 </body>
 </html>

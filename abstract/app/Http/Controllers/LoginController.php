@@ -47,8 +47,7 @@ class LoginController extends BaseController
         try {
             $user = $this->loginService->login($request->get('username'), $request->get('password'));
             session([self::CURRENT_USER => $user->username]);
-            //TODO get all users file and show them
-            return \view(self::DASHBOARD);
+            return $this->loginService->loadDashboardPage($user);
         } catch (\Exception $e) {
             return view(self::ERROR_VIEW, ['message' => $e->getMessage()]);
         }

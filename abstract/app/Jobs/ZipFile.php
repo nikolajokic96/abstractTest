@@ -55,7 +55,8 @@ class ZipFile implements ShouldQueue
 
         $zipArray = [
             'path' => $zipPath,
-            'fileName' => $this->fileName
+            'fileName' => $this->fileName,
+            'delete' => 0,
         ];
 
         $this->saveZipFile($zipArray);

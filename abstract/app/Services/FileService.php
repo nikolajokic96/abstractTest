@@ -6,6 +6,7 @@ use App\Jobs\Webhook;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Utilities\JsonPayloadStrategy;
+use Illuminate\Support\Facades\Http;
 
 class FileService
 {
@@ -34,7 +35,8 @@ class FileService
     {
         $fileArray = [
             'path' => $path,
-            'fileName' => $fileName
+            'fileName' => $fileName,
+            'delete' => 0,
         ];
 
         $this->userRepository->saveUsersFiles($fileArray);
@@ -57,6 +59,32 @@ class FileService
         $webhooksJob = new Webhook($payload);
         dispatch($webhooksJob);
 
+    }
+
+    /**
+     * Marks file as deleted
+     * @param string $fileName
+     */
+    public function deleteFile(string $fileName)
+    {
+        $user = $this->getCurrentUser();
+        $files = json_decode($user->files, true);
+        $zipFiles = json_decode($user->zipFiles, true);
+        $newFiles = [];
+        $newZipFiles = [];
+        foreach ($files as $key => $file) {
+            if ($file['fileName'] === $fileName) {
+                $file['delete'] = 1;
+                $zipFiles[$key]['delete'] = 1;
+            }
+
+            $newFiles[] = $file;
+            $newZipFiles[] = $zipFiles[$key];
+        }
+
+        $user->files = json_encode($newFiles);
+        $user->zipFiles = json_encode($newZipFiles);
+        $user->save();
     }
 
     /**
