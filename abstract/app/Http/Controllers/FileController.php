@@ -58,7 +58,6 @@ class FileController
         $zipFileJob = new ZipFile($fileName, $url, $currentUser);
         dispatch($zipFileJob);
         $this->fileService->sendWebhooks($url);
-        $this->fileService->reloadDashboardPage();
     }
 
     /**

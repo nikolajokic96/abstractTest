@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Console\Commands\DeleteFile;
 use App\Services\FileService;
 use App\Services\LoginService;
 use Illuminate\Contracts\Foundation\Application;
@@ -50,7 +51,8 @@ class ActionController
     {
         $this->fileService->deleteFile($request->get('fileName'));
         $user = $this->fileService->getCurrentUser();
-
+        $deleteFile = new DeleteFile();
+        $deleteFile->handle();
         return $this->loginService->loadDashboardPage($user);
     }
 }
